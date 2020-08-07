@@ -55,7 +55,7 @@ def download_file(file_list: list, save_path: str):
 
 
 def get_all_js_url(html: str):
-    # 提取js路径并
+    # 提取js路径
     js_list_1 = re.findall('<link rel="preload" href="(.*?)" as="script">', html)
     js_list_2 = re.findall('<script src="(.*?)"', html)
     all_js_list = js_list_1 + js_list_2
@@ -63,6 +63,7 @@ def get_all_js_url(html: str):
 
 
 def get_all_css_url(html: str):
+    # 提取css路径
     css_list_1 = re.findall('<link rel="preload" href="(.*?)" as="style">', html)
     css_list_2 = re.findall('<link rel="stylesheet" href="(.*?)">', html)
     all_css_list = css_list_1 + css_list_2
@@ -70,6 +71,7 @@ def get_all_css_url(html: str):
 
 
 def get_all_image_url(html: str):
+    # 提取图片路径
     image_list_1 = re.findall("""background: url\('(.*?)'\) no-repeat center center;""", html)
     image_list_2 = re.findall(""""focus":"(.*?)",""", html)
     image_list_3 = re.findall('''<img src="(.*?)"''', html)
@@ -119,7 +121,7 @@ def save_page(time_sleep: int, url: str, full_path: str):
         with open(os.path.join(pack, 'index.html'), 'w+') as f:
 
             f.write(html)
-
+        time.sleep(time_sleep)
 
 def main(argv):
     try:
@@ -160,6 +162,3 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-    # a = 'http://www.baidu.com'
-    # print(a.startswith('http://'))
-    # print()

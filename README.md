@@ -1,6 +1,38 @@
-## 启动命令
+# 爬虫项目
+
+
+
+## 1、目录结构描述
+```
+
+├── README.md                   // readme
+├── main.py                     // 主文件
+└── tmp                         
+    └── backup
+        └── 20200807141729      // 每次的获取结果 按时间
+            ├── css             // 存储css文件
+            ├── image           // 存储图片文件
+            ├── js              // 存储js文件
+            └── index.html      // html文件
+```
+
+
+## 2、启动命令
 
 - `python main.py -u http://m.sohu.com/limit/  -d 23 -o tmp/backup`
 
-<script src="//statics.itc.cn/mptcfeCBDCompRender/prod/1333c33a9ec25e2329ced3840aec884e172a0b8a7d37c0b39773850ceb63b64c24f8e415f83dbbf57568a20db617ba8943b3dc6ed20b7d2928a6d9b2bcc7b3b2.js" defer></script>
-<script src="//statics.itc.cn/spm/prod/js/1.0.1/index.js"></script>
+### 2.1 参数说明
+
+- `-u 抓取的目标网址  以 http://或者https:// 开头`
+- `-d 爬取的时间间隔 int类型`
+- `-o 结果存储路径，以当前项目路径为基准`
+
+## 3、结束命令
+
+- `Ctrl+C`
+
+## 4、环境说明
+
+```
+本项目基于python3.7环境
+```
