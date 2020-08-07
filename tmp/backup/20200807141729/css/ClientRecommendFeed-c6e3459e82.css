@@ -1,0 +1,51 @@
+.cbd-recommend[data-v-69b25305] {
+  border-bottom: 0.293333rem solid #f5f5f5;
+  background-color: #fff;
+}
+.cbd-recommend .recommend-title[data-v-69b25305] {
+  height: 0.506667rem;
+  padding: 0.533333rem 0 0.266667rem 0.346667rem;
+  line-height: 0.506667rem;
+  text-align: justify;
+  font-size: 0.506667rem;
+  font-weight: bold;
+  color: #3C3C3D;
+}
+.cbd-recommend .recommend-content-wrap .recommend-remind[data-v-69b25305] {
+  position: relative;
+  top: -0.026667rem;
+  padding: 0.586667rem 0 0.666667rem 0;
+  line-height: 0.373333rem;
+  text-align: center;
+  color: #A2A2A3;
+  background: #fff;
+  font-size: 0.373333rem;
+}
+.cbd-recommend .recommend-content-wrap[data-v-69b25305] .feed-item-container {
+  border-bottom: 1px solid #f5f5f5;
+}
+.cbd-recommend .recommend-more[data-v-69b25305] {
+  position: relative;
+  top: -0.026667rem;
+  padding: 0.533333rem 0 0.613333rem 0;
+  line-height: 0.373333rem;
+  text-align: center;
+  color: #A2A2A3;
+  background: #fff;
+  font-size: 0.373333rem;
+}
+.cbd-recommend .recommend-more a[data-v-69b25305] {
+  color: #A2A2A3;
+  text-decoration: none;
+  font-size: 0.373333rem;
+}
+.cbd-recommend .recommend-more a .icon-more[data-v-69b25305] {
+  display: inline-block;
+  position: relative;
+  left: 0.106667rem;
+  top: 0.053333rem;
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+  color: #D7D7D7;
+  font-size: 0.4rem;
+}
