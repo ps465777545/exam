@@ -149,10 +149,12 @@ def main(argv):
         elif opt == '-o':
             save_path = arg
             if not save_path:
-                save_path = '/tmp/backup'
+                save_path = 'tmp/backup'
+            if save_path.startswith('/'):
+                save_path = save_path[1:]
             full_path = os.path.join(base_dir, save_path)
             if not os.path.exists(full_path):
-                os.mkdir(full_path)
+                os.makedirs(full_path)
     save_page(time_sleep=time_sleep, url=url, full_path=full_path)
 
 
