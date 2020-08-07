@@ -12,20 +12,17 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 base_dir = os.path.split(os.path.realpath(__file__))[0]
 base_header = {
-    'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Mobile Safari/537.36'
+    'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) '
+                  'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Mobile Safari/537.36'
 }
 thread_pool = ThreadPoolExecutor(max_workers=20)
 
 
-def signal_handler(signal, frame):
-    """
-    监听信号机制
-    :param signal:
-    :param frame:
-    :return:
-    """
+def signal_handler(signalnum, handler):
+    # 监听信号机制
+    print(signalnum, handler)
     print('进程结束')
-    sys.exit(2)
+    exit(2)
 
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -46,7 +43,7 @@ def download_file(file_list: list, save_path: str):
     :return:
     """
     file_list = set(file_list)
-    all_task = [thread_pool.submit(get_static_request, (i)) for i in file_list]
+    all_task = [thread_pool.submit(get_static_request, i) for i in file_list]
     for future in as_completed(all_task):
         content, url = future.result()
         file_name = url.split('/')[-1]
@@ -72,8 +69,8 @@ def get_all_css_url(html: str):
 
 def get_all_image_url(html: str):
     # 提取图片路径
-    image_list_1 = re.findall("""background: url\('(.*?)'\) no-repeat center center;""", html)
-    image_list_2 = re.findall(""""focus":"(.*?)",""", html)
+    image_list_1 = re.findall("background: url\\('(.*?)'\\) no-repeat center center;", html)
+    image_list_2 = re.findall('"focus":"(.*?)",', html)
     image_list_3 = re.findall('''<img src="(.*?)"''', html)
     image_list_4 = re.findall('''"icon":"(.*?)"''', html)
     all_image_list = image_list_1 + image_list_2 + image_list_3 + image_list_4
@@ -88,7 +85,7 @@ def save_page(time_sleep: int, url: str, full_path: str):
     :param full_path: 存储路径
     :return:
     """
-    print('任务开始，输入Ctrl+C结束进程。')
+    print('任务开始，Ctrl+C结束进程。')
     while True:
         # 生成该时间点对应的目录及文件
         pack = os.path.join(full_path, datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
@@ -102,7 +99,7 @@ def save_page(time_sleep: int, url: str, full_path: str):
 
         # 获取网页源码
         html = requests.get(url=url, headers=base_header).text
-        # 提取js
+        # 提取js路径
         js_list = get_all_js_url(html=html)
         for i in js_list:
             html = html.replace(i, os.path.join('./js/', i.split('/')[-1]))
@@ -119,9 +116,10 @@ def save_page(time_sleep: int, url: str, full_path: str):
         download_file(image_list, image_path)
 
         with open(os.path.join(pack, 'index.html'), 'w+') as f:
-
             f.write(html)
         time.sleep(time_sleep)
+        print('over 1')
+
 
 def main(argv):
     try:
@@ -139,17 +137,16 @@ def main(argv):
             if not url.startswith('http://') or url.startswith('https://'):
                 print('url 不符合规则！请以http:// 或 https:// 开头')
                 sys.exit(2)
-        elif opt in ("-d"):
+        elif opt == '-d':
             time_sleep = arg
             try:
                 time_sleep = int(time_sleep)
-            except:
-                print('-d 必须是int类型')
+            except Exception as e:
+                print(f'-d 必须是int类型: {e}')
                 sys.exit(2)
             if time_sleep < 60:
-                print('-d 时间间隔默认不能小于60s')
                 time_sleep = 60
-        elif opt in ("-o"):
+        elif opt == '-o':
             save_path = arg
             if not save_path:
                 save_path = '/tmp/backup'
@@ -157,7 +154,6 @@ def main(argv):
             if not os.path.exists(full_path):
                 os.mkdir(full_path)
     save_page(time_sleep=time_sleep, url=url, full_path=full_path)
-    print(full_path, time_sleep, url)
 
 
 if __name__ == "__main__":
