@@ -10,6 +10,8 @@ import datetime
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+from requests.adapters import HTTPAdapter
+
 base_dir = os.path.split(os.path.realpath(__file__))[0]
 base_header = {
     'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) '
@@ -98,7 +100,14 @@ def save_page(time_sleep: int, url: str, full_path: str):
         os.mkdir(image_path)
 
         # 获取网页源码
-        html = requests.get(url=url, headers=base_header).text
+        s = requests.Session()
+        s.mount('http://', HTTPAdapter(max_retries=2))
+        s.mount('https://', HTTPAdapter(max_retries=2))
+        try:
+            html = s.get(url=url, headers=base_header, timeout=2).text
+        except Exception as e:
+            print(f'链接请求失败！{e}')
+            sys.exit(2)
         # 提取js路径
         js_list = get_all_js_url(html=html)
         for i in js_list:
